@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Project S.M.A.R.T. — Campus Appointment and Scheduling System">
+  <title>Project S.M.A.R.T. | Campus Appointment and Scheduling</title>
+  <style>
+    :root {
+      --navy: #14213d;
+      --blue: #2457c5;
+      --blue-light: #eaf1ff;
+      --teal: #18a999;
+      --ink: #202938;
+      --muted: #667085;
+      --line: #e5eaf2;
+      --surface: #ffffff;
+      --background: #f5f7fb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: var(--background);
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    .topbar {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+    .nav {
+      max-width: 1120px; margin: auto; padding: 14px 22px;
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; color: var(--navy); }
+    .brand-mark {
+      width: 38px; height: 38px; display: grid; place-items: center;
+      color: white; background: linear-gradient(135deg, var(--blue), var(--teal));
+      border-radius: 12px; font-weight: 900;
+    }
+    .nav-links { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; font-size: .92rem; color: #475467; }
+    .nav-links a:hover { color: var(--blue); }
+    .menu-toggle { display: none; border: 1px solid var(--line); background: white; border-radius: 9px; padding: 8px 11px; }
+    .hero {
+      color: white; background: radial-gradient(circle at 85% 20%, #356ad5 0, transparent 28%),
+        linear-gradient(130deg, #14213d 0%, #1e3a70 58%, #167c83 100%);
+      padding: 82px 22px 76px;
+    }
+    .hero-inner { max-width: 1120px; margin: auto; display: grid; grid-template-columns: 1.35fr .65fr; gap: 48px; align-items: center; }
+    .eyebrow { text-transform: uppercase; letter-spacing: .16em; font-size: .78rem; font-weight: 800; color: #bdebe7; }
+    h1 { font-size: clamp(2.35rem, 5vw, 4.2rem); line-height: 1.08; margin: 14px 0 18px; letter-spacing: -.04em; }
+    .hero p { max-width: 680px; color: #e4ebfa; font-size: 1.08rem; margin: 0 0 26px; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn { display: inline-block; border-radius: 10px; padding: 12px 18px; font-weight: 700; border: 1px solid transparent; cursor: pointer; }
+    .btn-primary { background: white; color: var(--navy); }
+    .btn-outline { border-color: rgba(255,255,255,.55); color: white; }
+    .hero-card {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.24);
+      border-radius: 22px; padding: 25px; box-shadow: 0 22px 60px rgba(0,0,0,.14);
+    }
+    .hero-card h2 { margin: 0 0 14px; font-size: 1.15rem; }
+    .mini-step { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.17); }
+    .mini-step:last-child { border: 0; }
+    .step-number { width: 30px; height: 30px; flex: 0 0 30px; display: grid; place-items: center; border-radius: 9px; color: var(--navy); background: #c8f4ec; font-weight: 800; }
+    main { max-width: 1120px; margin: auto; padding: 48px 22px 70px; }
+    section { scroll-margin-top: 88px; margin-bottom: 58px; }
+    .section-heading { max-width: 720px; margin-bottom: 24px; }
+    .section-heading .kicker { color: var(--blue); text-transform: uppercase; letter-spacing: .12em; font-weight: 800; font-size: .76rem; }
+    h2 { color: var(--navy); line-height: 1.2; }
+    .section-heading h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); margin: 8px 0 10px; }
+    .section-heading p { margin: 0; color: var(--muted); }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px; box-shadow: 0 8px 24px rgba(20,33,61,.035); }
+    .card h3 { margin: 8px 0; color: var(--navy); font-size: 1.08rem; }
+    .card p { margin: 0; color: var(--muted); }
+    .icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 12px; background: var(--blue-light); font-size: 1.25rem; }
+    .problem-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .list { padding-left: 20px; margin: 12px 0 0; }
+    .list li { margin: 7px 0; }
+    .callout { background: #eaf8f6; border: 1px solid #c9eee8; border-radius: 14px; padding: 20px; }
+    .callout strong { color: #12665f; }
+    .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+    .process-step { background: white; border: 1px solid var(--line); border-radius: 14px; padding: 17px; }
+    .process-step .num { font-size: .78rem; color: var(--blue); font-weight: 800; }
+    .process-step h3 { font-size: .98rem; margin: 5px 0; }
+    .process-step p { color: var(--muted); font-size: .9rem; margin: 0; }
+    .requirements { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .requirements ul { padding-left: 20px; }
+    .requirements li { margin: 8px 0; }
+    .table-wrap { overflow-x: auto; background: white; border: 1px solid var(--line); border-radius: 14px; }
+    table { width: 100%; border-collapse: collapse; min-width: 520px; }
+    th, td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--line); }
+    th { background: #eef3ff; color: var(--navy); }
+    tr:last-child td { border-bottom: 0; }
+    .badge { display: inline-block; border-radius: 999px; padding: 4px 9px; background: #e4f7ee; color: #176548; font-size: .78rem; font-weight: 700; }
+    .cta { background: var(--navy); color: white; padding: 30px; border-radius: 18px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .cta h2 { color: white; margin: 0 0 8px; }
+    .cta p { color: #d4deef; margin: 0; }
+    footer { background: #101a2e; color: #c6d0e2; padding: 26px 22px; text-align: center; font-size: .9rem; }
+    footer strong { color: white; }
+    @media (max-width: 850px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-card { max-width: 600px; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .steps { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 620px) {
+      .nav { align-items: flex-start; }
+      .menu-toggle { display: block; }
+      .nav-links { display: none; width: 100%; padding: 8px 0 4px; flex-direction: column; align-items: flex-start; gap: 10px; }
+      .nav-links.open { display: flex; }
+      .nav { flex-wrap: wrap; }
+      .brand { flex: 1; }
+      .grid, .problem-layout, .requirements, .steps { grid-template-columns: 1fr; }
+      .hero { padding-top: 55px; }
+      .cta { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="#home">
+        <span class="brand-mark">S</span>
+        <span>Project S.M.A.R.T.</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="navLinks">Menu ☰</button>
+      <div class="nav-links" id="navLinks">
+        <a href="#about">About</a>
+        <a href="#features">Features</a>
+        <a href="#process">How It Works</a>
+        <a href="#stakeholders">Stakeholders</a>
+        <a href="#requirements">Requirements</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="hero" id="home">
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow">A smarter campus experience</div>
+        <h1>Less waiting.<br>More learning.</h1>
+        <p>Project S.M.A.R.T. is a proposed Campus Appointment and Scheduling System that helps students plan office visits, choose available time slots, and receive digital QR tickets for a more organized campus transaction experience.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#features">Explore the System</a>
+          <a class="btn btn-outline" href="#process">See How It Works</a>
+        </div>
+      </div>
+      <aside class="hero-card" aria-label="Appointment process preview">
+        <h2>Your visit, organized</h2>
+        <div class="mini-step"><span class="step-number">1</span><span>Select an office and date</span></div>
+        <div class="mini-step"><span class="step-number">2</span><span>Choose an available time slot</span></div>
+        <div class="mini-step"><span class="step-number">3</span><span>Receive your appointment QR ticket</span></div>
+        <div class="mini-step"><span class="step-number">4</span><span>Check in at the office</span></div>
+      </aside>
+    </div>
+  </div>
+
+  <main>
+    <section id="about">
+      <div class="section-heading">
+        <div class="kicker">01 / About the project</div>
+        <h2>What is Project S.M.A.R.T.?</h2>
+        <p>A school-focused online platform designed to make campus office appointments easier to book, manage, and confirm.</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <div class="icon">🎯</div>
+          <h3>Purpose</h3>
+          <p>Organize student visits to the cashier, registrar, and accounting offices through scheduled appointments instead of relying only on walk-in queues.</p>
+        </article>
+        <article class="card">
+          <div class="icon">⏱️</div>
+          <h3>The Problem</h3>
+          <p>Students can spend class or lunch time waiting in crowded hallways, while staff must handle many arrivals at once.</p>
+        </article>
+        <article class="card">
+          <div class="icon">✨</div>
+          <h3>Expected Benefit</h3>
+          <p>Clearer schedules, better-planned visits, less crowding, and more organized appointment and transaction records.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="section-heading">
+        <div class="kicker">02 / Core features</div>
+        <h2>Tools for a smoother office visit</h2>
+        <p>The proposed system brings key appointment tasks together in one place.</p>
+      </div>
+      <div class="grid">
+        <article class="card"><div class="icon">🔐</div><h3>Student Accounts & Login</h3><p>Allow authorized students and campus staff to access the system using their accounts.</p></article>
+        <article class="card"><div class="icon">🏢</div><h3>Office Selection</h3><p>Choose the relevant campus office, such as cashier, registrar, or accounting.</p></article>
+        <article class="card"><div class="icon">🗓️</div><h3>Available Time Slots</h3><p>View dates, time blocks, and appointment availability published by each office.</p></article>
+        <article class="card"><div class="icon">🎟️</div><h3>Digital QR Ticket</h3><p>Receive a QR ticket associated with an appointment for office check-in.</p></article>
+        <article class="card"><div class="icon">📋</div><h3>Staff Schedule View</h3><p>Help front-desk staff review daily appointments and student details.</p></article>
+        <article class="card"><div class="icon">📊</div><h3>Admin Dashboard</h3><p>Let authorized administrators manage accounts, offices, schedules, and reports.</p></article>
+      </div>
+    </section>
+
+    <section id="process">
+      <div class="section-heading">
+        <div class="kicker">03 / How it works</div>
+        <h2>From booking to check-in</h2>
+        <p>A proposed digital flow that replaces some of the uncertainty of joining a physical queue.</p>
+      </div>
+      <div class="steps">
+        <article class="process-step"><div class="num">STEP 01</div><h3>Log in</h3><p>The student signs in to their account.</p></article>
+        <article class="process-step"><div class="num">STEP 02</div><h3>Select office</h3><p>Choose the office and preferred date.</p></article>
+        <article class="process-step"><div class="num">STEP 03</div><h3>Book a slot</h3><p>Review availability and confirm a time.</p></article>
+        <article class="process-step"><div class="num">STEP 04</div><h3>Get QR ticket</h3><p>The system issues a digital appointment ticket.</p></article>
+        <article class="process-step"><div class="num">STEP 05</div><h3>Check in</h3><p>Office staff scan the ticket, verify the appointment, and update its status.</p></article>
+      </div>
+    </section>
+
+    <section id="stakeholders">
+      <div class="section-heading">
+        <div class="kicker">04 / People involved</div>
+        <h2>Designed around campus needs</h2>
+        <p>Each stakeholder has a clear role in keeping appointments organized.</p>
+      </div>
+      <div class="grid">
+        <article class="card"><div class="icon">🎓</div><h3>Students</h3><p>Create or access an account, choose an office and time slot, book appointments, and view QR tickets.</p></article>
+        <article class="card"><div class="icon">🧾</div><h3>Office Staff / Cashiers</h3><p>View daily schedules, verify QR tickets, process services or payments, and update appointment records.</p></article>
+        <article class="card"><div class="icon">🛠️</div><h3>School Administrators</h3><p>Manage users, offices, schedules, and system reports through authorized administrative access.</p></article>
+      </div>
+    </section>
+
+    <section id="requirements">
+      <div class="section-heading">
+        <div class="kicker">05 / Feasibility & requirements</div>
+        <h2>What the system needs</h2>
+        <p>Project S.M.A.R.T. is proposed as a web-based system accessible from phones and computers.</p>
+      </div>
+      <div class="requirements">
+        <article class="card">
+          <h3>Operational and technical needs</h3>
+          <ul class="list">
+            <li>Mobile phones or computers with a web browser</li>
+            <li>Reliable internet connection</li>
+            <li>Web hosting or a web server</li>
+            <li>Database for users, offices, schedules, appointments, and tickets</li>
+            <li>QR scanning or ticket verification method</li>
+            <li>System maintenance and staff orientation</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Important safeguards</h3>
+          <ul class="list">
+            <li>Role-based access for students, staff, and administrators</li>
+            <li>Protection of student information and login credentials</li>
+            <li>Accurate office schedules and available slot capacity</li>
+            <li>Clear rules for cancellations, check-in, and walk-in visitors</li>
+            <li>Testing before deployment and ongoing updates</li>
+          </ul>
+        </article>
+      </div>
+      <div class="callout" style="margin-top:18px">
+        <strong>Feasibility note:</strong> The project is practical to develop with standard web technologies, hosting, and a database. Actual implementation will still depend on school approval, budget, internet availability, privacy requirements, and staff readiness.
+      </div>
+    </section>
+
+    <section id="data">
+      <div class="section-heading">
+        <div class="kicker">06 / System data</div>
+        <h2>Information the system organizes</h2>
+        <p>The proposed data model includes the following main records.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Record</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td>Student</td><td>Stores information for students who use the system.</td></tr>
+            <tr><td>Office</td><td>Lists campus offices that provide student services.</td></tr>
+            <tr><td>Office Schedule</td><td>Stores dates, time periods, and slot capacity.</td></tr>
+            <tr><td>Appointment</td><td>Records a student's booking and its status.</td></tr>
+            <tr><td>QR Ticket</td><td>Stores the digital ticket and check-in status.</td></tr>
+            <tr><td>Office Staff</td><td>Identifies staff who verify appointments and process transactions.</td></tr>
+            <tr><td>Transaction</td><td>Records a service or payment completed for an appointment.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <div class="cta">
+        <div>
+          <h2>A more organized campus starts with a planned visit.</h2>
+          <p>Project S.M.A.R.T. aims to make student office transactions more convenient and predictable.</p>
+        </div>
+        <a class="btn btn-primary" href="#home">Back to Top ↑</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <strong>Project S.M.A.R.T.</strong> — Campus Appointment and Scheduling System<br>
+    <span>Proposed academic project • Student appointments, office schedules, and QR check-in</span>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  </script>
+</body>
+</html>
